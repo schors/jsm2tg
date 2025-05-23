@@ -158,6 +158,11 @@ func TestConvertJiraToTgMarkup(t *testing.T) {
 			want:  "This is [https://example\\.com adasd](https://example.com)",
 		},
 		{
+			name:  "link formatting difficult case",
+			input: "[Ме|https://www.microsoft.com][*лко*|https://www.microsoft.com][мягкие|https://www.microsoft.com]",
+			want:  "[Ме](https://www.microsoft.com)[*лко*](https://www.microsoft.com)[мягкие](https://www.microsoft.com)",
+		},
+		{
 			name: "preformatted text",
 			input: `asdad {noformat} asdasd
 		sdad

@@ -527,7 +527,7 @@ func ConvertJiraToTgMarkup(input string) string {
 		case r == '#' && i+sz < len(input) && lineStart && stack.TopType() == tokenNone:
 			ok, j := DetectListLine(input[i:])
 			if ok {
-				result.WriteString(input[i : i+j])
+				result.WriteString(tg.EscapeTelegram(input[i : i+j]))
 				i += j
 
 				break
@@ -539,7 +539,7 @@ func ConvertJiraToTgMarkup(input string) string {
 			if r == '*' && lineStart && stack.TopType() == tokenNone {
 				ok, j := DetectListLine(input[i:])
 				if ok {
-					result.WriteString(input[i : i+j])
+					result.WriteString(tg.EscapeTelegram(input[i : i+j]))
 					i += j
 
 					break
