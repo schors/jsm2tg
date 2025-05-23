@@ -16,8 +16,8 @@ func ConvertJiraToTgMarkup(input string) string {
 
 ## Additional
 
-* **Q:** _Where you get jira wiki markup?!!!_
-* **A:** _Jira service management API use it by default (suddenly and undocumented)_
+* **Q:** _Where do you get jira wiki markup?!!!_
+* **A:** _Jira service management API uses it by default (surprisingly and undocumented)_
 
 ### Links
 
