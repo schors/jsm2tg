@@ -1,0 +1,8 @@
+*.swp
+*~
+*.log
+*.bak
+*.lock
+*.tmp
+*.md
+test-data
