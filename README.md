@@ -1,4 +1,4 @@
-# Jira/Telegram markup converter
+# Jira/Telegram markup converter and tools
 
 ## Overview
 
@@ -14,9 +14,9 @@ func ConvertJiraToTgMarkup(input string) string {
 
 * Jira service management API use it by default (suddenly and undocumented)
 
-### My jira contribution principles
+### jira contribution principies
 
-![Jira development process](logo.png)
+![Jira contribution principies](logo.png)
 
 ### Links
 
