@@ -10,19 +10,19 @@
 func ConvertJiraToTgMarkup(input string) string {
 ```
 
-### Where you get jira wiki markup?!!!
-
-* Jira service management API use it by default (suddenly and undocumented)
-
-### jira contribution principies
+## jira contribution principies
 
 ![Jira contribution principies](logo.png)
 
+## Additional
+
+* **Q:** _Where you get jira wiki markup?!!!_
+* **A:** _Jira service management API use it by default (suddenly and undocumented)_
+
 ### Links
 
-* https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all
-* https://core.telegram.org/bots/api#message
-
+* Jira wiki markup: https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all
+* Telegram messanger markups: https://core.telegram.org/bots/api#message
 
 ---
 [![UNLICENSE](noc.png)](UNLICENSE)
