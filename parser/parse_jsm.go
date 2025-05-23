@@ -136,6 +136,8 @@ func newToken(typ tokenType) token {
 	return t
 }
 
+// ConvertJiraToTgMarkup - Convert Jira markup to Telegram markup.
+// This function is not thread-safe.
 func ConvertJiraToTgMarkup(input string) string {
 	var (
 		result strings.Builder

@@ -4,5 +4,4 @@
 *.bak
 *.lock
 *.tmp
-*.md
 test-data
