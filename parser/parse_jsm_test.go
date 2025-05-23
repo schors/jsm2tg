@@ -145,12 +145,12 @@ func TestConvertJiraToTgMarkup(t *testing.T) {
 		{
 			name:  "link formatting with text",
 			input: "This is [Ex:*am*ple |https://example.com] adasd.",
-			want:  "This is [Ex:*am*ple ](https://example.com) adasd\\.",
+			want:  "This is [Ex:\\*am\\*ple ](https://example.com) adasd\\.",
 		},
 		{
 			name:  "link formatting without end",
 			input: "This is [Ex:*am*ple |https://example.com",
-			want:  "This is [Ex:*am*ple ](https://example.com)",
+			want:  "This is [Ex:\\*am\\*ple ](https://example.com)",
 		},
 		{
 			name:  "link formatting without end 2",
@@ -160,7 +160,12 @@ func TestConvertJiraToTgMarkup(t *testing.T) {
 		{
 			name:  "link formatting difficult case",
 			input: "[Ме|https://www.microsoft.com][*лко*|https://www.microsoft.com][мягкие|https://www.microsoft.com]",
-			want:  "[Ме](https://www.microsoft.com)[*лко*](https://www.microsoft.com)[мягкие](https://www.microsoft.com)",
+			want:  "[Ме](https://www.microsoft.com)[\\*лко\\*](https://www.microsoft.com)[мягкие](https://www.microsoft.com)",
+		},
+		{
+			name:  "link formatting difficult case 2",
+			input: "[https://s3.amazonaws.com/storage-current/g19.html?search=T3965b9wUtsBuWDuiKDkvuKqfXkiKWi676RWwmyixYvi2QaF1JcLAtfBZMNEJihjmEtiSuUJ4eDeyAzBcE9CvFY2pJZe9f9s7v8xCaqh4dnyE5WSgqHTuuuATf5HKStcpB61JLtngjmUBgeTe6ujDD4sxaLGbvzVNjYGFt6dx4mFJqpsg2mMznKcm68daEYiNersyHTWpue2uWSB7tDshY1RqNJmyNqneVJabsjJjfV4qNBs3fWS9m5ztLNuLDX85i2t2z9oD2zFx473bRZMaGFArc7ATTqkCWeLrfA4DtZmNuMidCYykPu7Y8MqQbBH4NUZvXCrf3sTTfDNPYQaggA5MnentnPfT65qivCmXfyzyCThquVmu367jUPw4NUisGYdomHTT6PChrWVHdcBbpZhNTDkKReox3BnhWuwMnWyb3EDnVVNt4zTRgrGqpULJv8BjscwNBQ5crCJd1fPqGgSbvuupvX3fThm9K4z7D4UxWnbFniDroz9Wh7MAJC9wQEG4SLtM5VWjk3GCnLkUSVBf9zoPrckgQ4dsA9YSgYyBqxrBV6fB9RtFgsnw6kAmqGu6g571NzMW9USj3hPFJ5xyn7rghMHPVAXtHbW3S8fakWUACfcU5zQrb5dHZkodwYNWtywRBYg7YP11TxNMrqphckXNMANWiRVbNGHU6EziykjokzuCi8EqPR3dWkUNT99hYN3HcrZdouVhvUN8iWM2g1j1j29Lz9FjLizJmZDW8wFGAyJLDH2b6ipLqsfNg7YiCgTYw9FexhKP9UNPQr12dtCFPqzEyEw6dVR9JU9qDKx4w4iLF81NqgGezZ3Z5v4wd253sY4XTUQEFKjiGa5zTHWJZhGguNeE9ngXLn2Et4LqTkcZs7Yaps6h6CcYGpqhG3dgbsNnQ8qMFQd1Bpkr9ZR1XZoBioAMvtjpubUXXLKRYa9RCL5E3ULo3BcWDxqLfb5Mh6y4H4aciMaQfAvf7Gh5qcEj6muxATLMG5NW3DREPmVy|https://s3.amazonaws.com/storage-current/g19.html?search=T3965b9wUtsBuWDuiKDkvuKqfXkiKWi676RWwmyixYvi2QaF1JcLAtfBZMNEJihjmEtiSuUJ4eDeyAzBcE9CvFY2pJZe9f9s7v8xCaqh4dnyE5WSgqHTuuuATf5HKStcpB61JLtngjmUBgeTe6ujDD4sxaLGbvzVNjYGFt6dx4mFJqpsg2mMznKcm68daEYiNersyHTWpue2uWSB7tDshY1RqNJmyNqneVJabsjJjfV4qNBs3fWS9m5ztLNuLDX85i2t2z9oD2zFx473bRZMaGFArc7ATTqkCWeLrfA4DtZmNuMidCYykPu7Y8MqQbBH4NUZvXCrf3sTTfDNPYQaggA5MnentnPfT65qivCmXfyzyCThquVmu367jUPw4NUisGYdomHTT6PChrWVHdcBbpZhNTDkKReox3BnhWuwMnWyb3EDnVVNt4zTRgrGqpULJv8BjscwNBQ5crCJd1fPqGgSbvuupvX3fThm9K4z7D4UxWnbFniDroz9Wh7MAJC9wQEG4SLtM5VWjk3GCnLkUSVBf9zoPrckgQ4dsA9YSgYyBqxrBV6fB9RtFgsnw6kAmqGu6g571NzMW9USj3hPFJ5xyn7rghMHPVAXtHbW3S8fakWUACfcU5zQrb5dHZkodwYNWtywRBYg7YP11TxNMrqphckXNMANWiRVbNGHU6EziykjokzuCi8EqPR3dWkUNT99hYN3HcrZdouVhvUN8iWM2g1j1j29Lz9FjLizJmZDW8wFGAyJLDH2b6ipLqsfNg7YiCgTYw9FexhKP9UNPQr12dtCFPqzEyEw6dVR9JU9qDKx4w4iLF81NqgGezZ3Z5v4wd253sY4XTUQEFKjiGa5zTHWJZhGguNeE9ngXLn2Et4LqTkcZs7Yaps6h6CcYGpqhG3dgbsNnQ8qMFQd1Bpkr9ZR1XZoBioAMvtjpubUXXLKRYa9RCL5E3ULo3BcWDxqLfb5Mh6y4H4aciMaQfAvf7Gh5qcEj6muxATLMG5NW3DREPmVy]",
+			want:  "[https://s3\\.amazonaws\\.com/storage\\-current/g19\\.html?search\\=T3965b9wUtsBuWDuiKDkvuKqfXkiKWi676RWwmyixYvi2QaF1JcLAtfBZMNEJihjmEtiSuUJ4eDeyAzBcE9CvFY2pJZe9f9s7v8xCaqh4dnyE5WSgqHTuuuATf5HKStcpB61JLtngjmUBgeTe6ujDD4sxaLGbvzVNjYGFt6dx4mFJqpsg2mMznKcm68daEYiNersyHTWpue2uWSB7tDshY1RqNJmyNqneVJabsjJjfV4qNBs3fWS9m5ztLNuLDX85i2t2z9oD2zFx473bRZMaGFArc7ATTqkCWeLrfA4DtZmNuMidCYykPu7Y8MqQbBH4NUZvXCrf3sTTfDNPYQaggA5MnentnPfT65qivCmXfyzyCThquVmu367jUPw4NUisGYdomHTT6PChrWVHdcBbpZhNTDkKReox3BnhWuwMnWyb3EDnVVNt4zTRgrGqpULJv8BjscwNBQ5crCJd1fPqGgSbvuupvX3fThm9K4z7D4UxWnbFniDroz9Wh7MAJC9wQEG4SLtM5VWjk3GCnLkUSVBf9zoPrckgQ4dsA9YSgYyBqxrBV6fB9RtFgsnw6kAmqGu6g571NzMW9USj3hPFJ5xyn7rghMHPVAXtHbW3S8fakWUACfcU5zQrb5dHZkodwYNWtywRBYg7YP11TxNMrqphckXNMANWiRVbNGHU6EziykjokzuCi8EqPR3dWkUNT99hYN3HcrZdouVhvUN8iWM2g1j1j29Lz9FjLizJmZDW8wFGAyJLDH2b6ipLqsfNg7YiCgTYw9FexhKP9UNPQr12dtCFPqzEyEw6dVR9JU9qDKx4w4iLF81NqgGezZ3Z5v4wd253sY4XTUQEFKjiGa5zTHWJZhGguNeE9ngXLn2Et4LqTkcZs7Yaps6h6CcYGpqhG3dgbsNnQ8qMFQd1Bpkr9ZR1XZoBioAMvtjpubUXXLKRYa9RCL5E3ULo3BcWDxqLfb5Mh6y4H4aciMaQfAvf7Gh5qcEj6muxATLMG5NW3DREPmVy](https://s3.amazonaws.com/storage-current/g19.html?search=T3965b9wUtsBuWDuiKDkvuKqfXkiKWi676RWwmyixYvi2QaF1JcLAtfBZMNEJihjmEtiSuUJ4eDeyAzBcE9CvFY2pJZe9f9s7v8xCaqh4dnyE5WSgqHTuuuATf5HKStcpB61JLtngjmUBgeTe6ujDD4sxaLGbvzVNjYGFt6dx4mFJqpsg2mMznKcm68daEYiNersyHTWpue2uWSB7tDshY1RqNJmyNqneVJabsjJjfV4qNBs3fWS9m5ztLNuLDX85i2t2z9oD2zFx473bRZMaGFArc7ATTqkCWeLrfA4DtZmNuMidCYykPu7Y8MqQbBH4NUZvXCrf3sTTfDNPYQaggA5MnentnPfT65qivCmXfyzyCThquVmu367jUPw4NUisGYdomHTT6PChrWVHdcBbpZhNTDkKReox3BnhWuwMnWyb3EDnVVNt4zTRgrGqpULJv8BjscwNBQ5crCJd1fPqGgSbvuupvX3fThm9K4z7D4UxWnbFniDroz9Wh7MAJC9wQEG4SLtM5VWjk3GCnLkUSVBf9zoPrckgQ4dsA9YSgYyBqxrBV6fB9RtFgsnw6kAmqGu6g571NzMW9USj3hPFJ5xyn7rghMHPVAXtHbW3S8fakWUACfcU5zQrb5dHZkodwYNWtywRBYg7YP11TxNMrqphckXNMANWiRVbNGHU6EziykjokzuCi8EqPR3dWkUNT99hYN3HcrZdouVhvUN8iWM2g1j1j29Lz9FjLizJmZDW8wFGAyJLDH2b6ipLqsfNg7YiCgTYw9FexhKP9UNPQr12dtCFPqzEyEw6dVR9JU9qDKx4w4iLF81NqgGezZ3Z5v4wd253sY4XTUQEFKjiGa5zTHWJZhGguNeE9ngXLn2Et4LqTkcZs7Yaps6h6CcYGpqhG3dgbsNnQ8qMFQd1Bpkr9ZR1XZoBioAMvtjpubUXXLKRYa9RCL5E3ULo3BcWDxqLfb5Mh6y4H4aciMaQfAvf7Gh5qcEj6muxATLMG5NW3DREPmVy)",
 		},
 		{
 			name: "preformatted text",
@@ -202,7 +207,7 @@ func main() {
 * Item 3
 ** Subitem 1
 ** Subitem 2`,
-			want: "* Item 1\n* Item 2\n*# Subitem 1\n*# Subitem 2\n* Item 3\n** Subitem 1\n** Subitem 2",
+			want: "\\* Item 1\n\\* Item 2\n\\*\\# Subitem 1\n\\*\\# Subitem 2\n\\* Item 3\n\\*\\* Subitem 1\n\\*\\* Subitem 2",
 		},
 	}
 

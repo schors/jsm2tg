@@ -141,7 +141,8 @@ func ConvertJiraToTgMarkup(input string) string {
 		result strings.Builder
 		stack  tokenStack
 
-		linkURL strings.Builder
+		linkURL       strings.Builder
+		linkThirdPart bool
 	)
 
 	lineStart := true
@@ -253,9 +254,8 @@ func ConvertJiraToTgMarkup(input string) string {
 			nr, nsz := utf8.DecodeRuneInString(input[i+sz:])
 			if unicode.IsSpace(nr) {
 				result.WriteString(tg.EscapeTelegram(string(r)))
-				if stack.TopType() == tokenLinkTextAndURL ||
-					stack.TopType() == tokenLinkURL {
-					linkURL.WriteRune(r)
+				if stack.TopType() == tokenLinkURL || stack.TopType() == tokenLinkTextAndURL {
+					linkURL.WriteString(tg.EscapeTelegramLink(string(r)))
 				}
 
 				i += sz
@@ -264,25 +264,13 @@ func ConvertJiraToTgMarkup(input string) string {
 			}
 
 			result.WriteString(tg.EscapeTelegram(string(nr)))
-			if stack.TopType() == tokenLinkTextAndURL ||
-				stack.TopType() == tokenLinkURL {
-				linkURL.WriteRune(nr)
+			if stack.TopType() == tokenLinkURL || stack.TopType() == tokenLinkTextAndURL {
+				linkURL.WriteString(tg.EscapeTelegramLink(string(nr)))
 			}
 
 			i += sz + nsz
 
 			continue
-		}
-
-		if r != ']' && (stack.TopType() == tokenLinkTextAndURL ||
-			stack.TopType() == tokenLinkURL) {
-			linkURL.WriteRune(r)
-
-			if stack.TopType() == tokenLinkURL {
-				i += sz
-
-				continue
-			}
 		}
 
 		switch {
@@ -294,7 +282,37 @@ func ConvertJiraToTgMarkup(input string) string {
 			lineStart = false
 		}
 
-		if lineStart {
+		if r != ']' && (stack.TopType() == tokenLinkTextAndURL ||
+			stack.TopType() == tokenLinkURL) {
+
+			if !linkThirdPart {
+				if r == '|' {
+					linkThirdPart = true
+				}
+
+				linkURL.WriteString(tg.EscapeTelegramLink(string(r)))
+				// result.WriteString(tg.EscapeTelegram(string(r)))
+			}
+
+			if stack.TopType() == tokenLinkTextAndURL {
+				result.WriteString(tg.EscapeTelegram(string(r)))
+			}
+
+			i += sz
+			pr = r
+
+			continue
+		}
+
+		if r != '|' && stack.TopType() == tokenLinkText {
+			result.WriteString(tg.EscapeTelegram(string(r)))
+			i += sz
+			pr = r
+
+			continue
+		}
+
+		if lineStart && stack.TopType() == tokenNone {
 			switch {
 			case r == 'h' && i+sz < len(input) && (strings.HasPrefix(input[i:], "h1. ") ||
 				strings.HasPrefix(input[i:], "h2. ") || strings.HasPrefix(input[i:], "h3. ") ||
@@ -344,16 +362,7 @@ func ConvertJiraToTgMarkup(input string) string {
 				linkURL.WriteString(tg.EscapeTelegramLink("https://example.com"))
 			}
 
-			if stack.TopType() == tokenLinkURL {
-				result.WriteString(string(']'))
-			}
-
-			if stack.TopType() == tokenLinkTextAndURL ||
-				stack.TopType() == tokenLinkText {
-
-				result.WriteString(string(r))
-			}
-
+			result.WriteString(string(r))
 			result.WriteString("(" + tg.EscapeTelegramLink(linkURL.String()) + ")")
 
 			stack.Pop()
@@ -365,6 +374,7 @@ func ConvertJiraToTgMarkup(input string) string {
 			stack.TopType() != tokenLinkTextAndURL && stack.TopType() != tokenLinkURL &&
 			stack.TopType() != tokenUnsupportedLink):
 			linkURL.Reset()
+			linkThirdPart = false
 
 			if input[i+sz] == '^' ||
 				input[i+sz] == '#' ||
