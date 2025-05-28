@@ -547,6 +547,7 @@ func ConvertJiraToTgMarkup(input string) string {
 
 			result.WriteString(tg.EscapeTelegram(string(r)))
 			i += sz
+		/* TODO: Just bug in jira rendering, temporary disabled
 		case r == '*' || r == '_' || r == '-' || r == '+' || r == '^' || r == '~':
 			if r == '*' && lineStart && stack.TopType() == tokenNone {
 				ok, j := DetectListLine(input[i:])
@@ -573,6 +574,7 @@ func ConvertJiraToTgMarkup(input string) string {
 			result.WriteString(currentToken.OpenTag())
 
 			i += sz
+		*/
 		default:
 			result.WriteString(tg.EscapeTelegram(string(r)))
 
